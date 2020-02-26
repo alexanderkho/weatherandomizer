@@ -5,33 +5,19 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      weatherDataLoaded: false,
-      mapDataLoaded: false
+      coords: null,
+      weatherData: null
     }
-    this.fetchMapData = this.fetchMapData.bind(this);
     this.fetchWeatherData = this.fetchWeatherData.bind(this);
   }
 
   async componentDidMount() {
     await this.fetchWeatherData();
-    this.setState({ weatherDataLoaded: true });
-  }
-
-  async componentDidUpdate(prevProps, prevState) {
-    if (this.state.weatherDataLoaded && ! prevState.weatherDataLoaded) {
-      await this.fetchMapData();
-      this.setState({ mapDataLoaded: true });
-    }
   }
 
   async fetchWeatherData() {
-    console.log('fetching weather data...');
-    return;
-  }
-
-  async fetchMapData() {
-    console.log('fetching map data...');
-    return;
+    const data = await fetch('http://localhost:8080/api/random').then(res => res.json());
+    this.setState({ coords: data.coords, weatherData: data.weatherData });
   }
   
   render() {
@@ -39,8 +25,9 @@ class App extends Component {
       <div>
         <h1>Weatherly</h1>
         <Button color="danger"> click me!</Button>
-        {this.state.weatherDataLoaded ? <p>The weather is: cold</p>: null}
-        {this.state.mapDataLoaded ? <p>Map goes here</p>: null}
+        {this.state.coords && this.state.weatherData ? 
+        <p>yo</p> 
+        : null }
       </div>
     )
   }
