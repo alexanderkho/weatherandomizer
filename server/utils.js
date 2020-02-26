@@ -1,6 +1,23 @@
 require('dotenv').config();
 const axios = require('axios');
 
+//Fetches new coordinates until they are in a valid city
+module.exports.getRandomWeatherData = async () => {
+    let isValidLocation = false;
+    let coords;
+    let weatherData;
+    while (isValidLocation === false) {
+        coords = await _getRandomCoordinates();
+        weatherData = await _getWeatherData(coords);
+        if (weatherData.name !== '') {
+            isValidLocation = true;
+        }
+    }
+    return { coords, weatherData };
+}
+
+
+//Helper Functions
 const _fetchCoordinate = async (type) => {
     try {
         const options = {
@@ -24,7 +41,7 @@ const _fetchCoordinate = async (type) => {
     }
 }
 
-module.exports.getRandomCoordinates = async () => {
+const _getRandomCoordinates = async () => {
     try {
         await Promise.all([_fetchCoordinate('lat'), _fetchCoordinate('lon')]).then((res) => {
             location = {lat: res[0], lon: res[1]}
@@ -35,13 +52,8 @@ module.exports.getRandomCoordinates = async () => {
     }
 }
 
-//mocks the api call for testing purposes
-module.exports.getRandomCoordinatesSync = () => {
-    const signs = [1, -1];
-    return {
-        lat: Math.floor(Math.random() * 91) * signs[Math.floor(Math.random() * 2)],
-        lon: Math.floor(Math.random() * 181) * signs[Math.floor(Math.random() * 2)]
-    }
+const _getWeatherData = async (coords) => {
+    const weatherData = await axios.get
+            (`http://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${process.env.OWM_KEY}&units=metric`);
+    return weatherData.data;
 }
-
-module.exports.owmKey = process.env.OWM_KEY;

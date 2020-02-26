@@ -18,11 +18,8 @@ app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/api/random', async (req, res) => {
     try {
-        const coords = await utils.getRandomCoordinates();
-        const weatherRequest = await axios.get
-            (`http://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${utils.owmKey}&units=metric`);
-        const weatherData = weatherRequest.data
-        res.send({ coords, weatherData }).status(200);
+        const data = await utils.getRandomWeatherData();
+        res.send(data).status(200);
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
