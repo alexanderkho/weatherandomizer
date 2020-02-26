@@ -1,34 +1,18 @@
-# nano-react-app-template
+# WeatheRandomizer
+This is a simple application which displays weather information for a randomly generated location.
 
-The template project for [nano-react-app](https://github.com/adrianmcli/nano-react-app).
+## Technology Used
+The front end of this app was created with React.js, using the nano-react-app (https://github.com/adrianmcli/nano-react-app) boilerplate starter code, and the Reactstrap (https://reactstrap.github.io/) component styling library. The backend was built with Node.js and Express. 
 
-- `npm start` — This will spawn a development server with a default port of `1234`.
-- `npm run build` — This will output a production build in the `dist` directory.
+The backend of this application makes use of the Random.org API (https://openweathermap.org/api) to generate random GPS coordinates and the Open Weather Maps API https://openweathermap.org/api) to fetch weather data. The front end uses the Google Maps Embedded API (https://developers.google.com/maps/documentation/embed/guide) to display the geographical location of the weather. 
 
-## Custom port
+## Running The App
+All three external API's require a unique access key in order to run this app. Please follow the instructions at in provided links to generate your own keys. Then, create a "./env" and "./src/googleAPIKey.js" file (using the provided example files as templates) and paste your keys into the correspoinding fields. 
 
-You can use the `-p` flag to specify a port for development. To do this, you can either run `npm start` with an additional flag:
-
+Finally, to run this application:
 ```
-npm start -- -p 3000
+npm install
+npm run build
+npm start
 ```
-
-Or edit the `start` script directly:
-
-```
-parcel index.html -p 3000
-```
-
-## Adding styles
-
-You can use CSS files with simple ES2015 `import` statements in your Javascript:
-
-```js
-import "./index.css";
-```
-
-## Babel transforms
-
-The Babel preset [babel-preset-nano-react-app](https://github.com/adrianmcli/babel-preset-nano-react-app) and a small amount of configuration is used to support the same transforms that Create React App supports.
-
-The Babel configuration lives inside `package.json` and will override an external `.babelrc` file, so if you want to use `.babelrc` remember to delete the `babel` property inside `package.json`.
+You can then visit http://localhost:8080 in your browser to view the application.

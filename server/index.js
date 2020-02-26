@@ -1,18 +1,18 @@
 const express = require('express');
 const path = require('path');
-const axios = require('axios');
 const utils = require('./utils.js');
 const cors = require('cors');
 
 const app = express();
 
-const corsOptions  = {
-    origin: '*',
-    methods: 'GET,POST,PUT',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+//Uncomment this to enable requests from the react dev server (localhost:1234)
+// const corsOptions  = {
+//     origin: '*',
+//     methods: 'GET',
+//     optionsSuccessStatus: 200
+// }
+// app.use(cors(corsOptions));
 
-app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 

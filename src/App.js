@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   async fetchWeatherData() {
-    const data = await fetch('/api/random').then(res => res.json());
+    const data = await fetch('http://localhost:8080/api/random').then(res => res.json());
     this.setState({ loc: data.loc, weatherData: data.weatherData, loading: false });
   }
 
