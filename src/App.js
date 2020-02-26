@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Spinner } from 'reactstrap';
+import { Button, Spinner, Jumbotron, Container, Row, Col } from 'reactstrap';
 import WeatherView from './WeatherView.js';
+import MapView from './MapView.js';
 
 class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      coords: null,
+      loc: null,
       weatherData: null,
       loading: true
     }
@@ -19,8 +20,8 @@ class App extends Component {
   }
 
   async fetchWeatherData() {
-    const data = await fetch('http://localhost:8080/api/random').then(res => res.json());
-    this.setState({ coords: data.coords, weatherData: data.weatherData, loading: false });
+    const data = await fetch('/api/random').then(res => res.json());
+    this.setState({ loc: data.loc, weatherData: data.weatherData, loading: false });
   }
 
   handleClick() {
@@ -30,14 +31,31 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Weatherly</h1>
-        <Button color="primary" size="lg" onClick={this.handleClick}>Try Another Location!</Button>
         <div>
-          {this.state.loading ? <Spinner size="lg" color="primary"/> : null}
+          <Jumbotron fluid>
+            <Container fluid>
+              <div style={{textAlign: "center"}}>
+                <h1 className="display-2">WeatheRandomizer</h1>
+                <hr></hr>
+                <p className="lead">Get Weather Info for Random Locations Across the Globe!</p>
+              </div>
+            </Container>
+          </Jumbotron>
         </div>
-        {this.state.coords && this.state.weatherData ? 
-        <WeatherView coords={this.state.coords} weatherData={this.state.weatherData} />
-        :  null }
+          {this.state.loading ? <Spinner size="lg" color="primary"/> : 
+          <Container style={{marginBottom: "2rem"}}>
+            <Row>
+              <Col xs="6">
+                <h2>Current Location: {this.state.loc}</h2>
+                <Button color="primary" size="lg" onClick={this.handleClick}>Try Another Location!</Button>
+                <WeatherView weatherData={this.state.weatherData} />
+              </Col>
+              <Col xs="6">
+                <MapView loc={this.state.loc} />
+              </Col>
+            </Row>
+          </Container>
+          }
       </div>
     )
   }
